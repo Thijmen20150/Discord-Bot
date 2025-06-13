@@ -1,8 +1,17 @@
+const express = require('express');
 const { Client, Collection, GatewayIntentBits, Events } = require('discord.js');
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
+// ====== EXPRESS WEBSERVER ======
+const app = express();
+app.get('/', (req, res) => res.send('Bot is running!'));
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🌐 Web server running on port ${PORT}`));
+
+// ====== DISCORD BOT SETUP ======
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
@@ -26,7 +35,6 @@ client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
   const command = client.commands.get(interaction.commandName);
-
   if (!command) return;
 
   try {
